@@ -1,0 +1,10 @@
+{
+  "hosted-zone:account=109397709524:domainName=apozo.click:region=us-east-1": {
+    "Id": "/hostedzone/Z04028931D4FGXH3FAQTV",
+    "Name": "apozo.click."
+  },
+  "hosted-zone:account=109397709524:domainName=alejandropozo.com:region=us-east-1": {
+    "Id": "/hostedzone/Z10022953IA9H99TW754J",
+    "Name": "alejandropozo.com."
+  }
+}
