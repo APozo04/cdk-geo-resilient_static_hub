@@ -33,6 +33,27 @@ The deployment process is fully automated using **AWS CodePipeline** and **CodeB
 
 ## 🛠️ Setup & Installation
 
+### 0. Prerequisites: GitHub Connection
+Before configuring the environment, you must manually establish a connection between AWS and your GitHub account. This is a one-time setup required for the CI/CD pipeline.
+
+1.  **Navigate to Connections:** Open the AWS Console and go to **CodePipeline** > **Settings** > **Connections**.
+2.  **Create Connection:**
+    * Click **Create connection**.
+    * Select **GitHub** as the provider.
+    * Provide a name (e.g., `aws-github-connection`).
+3.  **Authorize GitHub:**
+    * Click **Connect to GitHub**. A popup will appear.
+    * Select your GitHub organization/account.
+    * If prompted, click **Install a new app** to grant AWS access to your repository.
+4.  **Finalize Activation:**
+    * Once authorized, ensure the status shows as **Available**. 
+    * *Note: If it stays "Pending," click "Connect" again to finish the handshake.*
+5.  **Copy the ARN:** Copy the generated ARN. It will look like this:
+    `arn:aws:codestar-connections:region:account-id:connection/uuid`
+
+> [!TIP]
+> Keep this ARN handy; you will need to paste it into the `GITHUB_CONNECTION_ARN` field in your `.env` file in the next step.
+
 ### 1. Environment Configuration
 You must create a `.env` file in the root directory. Copy and paste the following structure:
 
