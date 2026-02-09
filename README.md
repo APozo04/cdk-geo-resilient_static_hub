@@ -1,6 +1,6 @@
 # 🌐 Geo-Resilient Serverless Stack
 
-A high-performance, secure, and globally resilient web architecture. This project integrates a **Next.js** frontend with an **intelligent serverless API** designed to track unique visitors, geographical data, and device metrics with optimized cost and performance.
+Secure, serverless web stack with global resilience, with a **static** frontend and an **intelligent visitor serverless API** that counts visitors, their country, and devices. The web deployment is fully automated through CI/CD on GitHub with AWS CodePipeline.
 
 
 ## 🏗️ Architectural Overview
