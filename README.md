@@ -29,7 +29,6 @@ The deployment process is fully automated using **AWS CodePipeline** and **CodeB
     2.  Synchronizes the build to the Primary S3 bucket.
     3.  Triggers a **CloudFront Invalidation** to refresh global edge caches instantly.
 
----
 
 ## 🛠️ Setup & Installation
 
@@ -91,33 +90,65 @@ source ./init.sh
 
 ### 3. Deployment
 
-Once the environment is initialized and your `.env` is configured:
+Once the environment is initialized and your `.env` is configured, you can deploy the stack to your desired environment:
 
-```bash
-cdk deploy --all
-```
-To deploy the Production environment:
-```bash
-cdk deploy --all --env=prod
-```
+* **Development (Default):**
+    ```bash
+    cdk deploy --all
+    ```
+* **Production:**
+    ```bash
+    cdk deploy --all --env=prod
+    ```
+
 > [!IMPORTANT]
 > **Production Resource Persistence**
 > For security and data integrity, all S3 buckets and DynamoDB tables in the **production environment** are configured with a `RETAIN` removal policy.
->
-> This means that:
 > * Data and resources will **not be deleted** if the CDK stack is destroyed.
 > * **Manual cleanup** via the AWS Console or CLI is required if you wish to permanently remove these resources.
 
+---
+
 ## 📊 Technical Specifications
 
-| Component | Technology | Optimization Pattern |
+| Component | Technology | Optimization / Security Pattern |
 | :--- | :--- | :--- |
 | **Frontend** | Next.js (Static Export) | S3 Origin Group Failover |
 | **API** | AWS Lambda | Combined GET/POST for cost efficiency |
 | **Database** | DynamoDB | TTL-based deduplication & GSI for aggregation |
 | **Infrastructure** | AWS CDK (Python) | 100% Declarative IaC |
 | **CI/CD** | AWS CodePipeline | GitHub-triggered automated invalidations |
-| **Data Safety** |	S3 & DynamoDB |	RETAIN policy in Production (No auto-deletion)
+| **Data Safety** | S3 & DynamoDB | **RETAIN** policy in Production |
+
+---
+
+## 🗑️ Clean Up & Destruction
+
+To avoid ongoing AWS charges, you should decommission the infrastructure when it is no longer needed.
+
+### 1. Automatic Destruction (CDK)
+Run the following command to remove the stacks managed by CDK. Ensure you use the correct environment flag:
+
+* **Development:**
+    ```bash
+    cdk destroy --all
+    ```
+* **Production:**
+    ```bash
+    cdk destroy --all --env=prod
+    ```
+
+### 2. Manual Cleanup (Production Only)
+As mentioned in the [Deployment](#3-deployment) section, production resources are protected by a `RETAIN` policy. Even after running `cdk destroy`, you must manually delete the following via the AWS Console or CLI:
+
+* **S3 Buckets:** You must **Empty** the buckets first before they can be deleted.
+* **DynamoDB Tables:** Delete the visitor tracking table.
+* **CodeStar Connection:** If you want to completely remove access, navigate to **Settings > Connections** in CodePipeline and delete the GitHub connection.
+
+> [!CAUTION]
+> **Data Loss:** Deleting these resources is permanent. Ensure you have backed up any necessary visitor data or logs before proceeding with manual deletion.
+
+---
 
 > [!WARNING]
 > **Testing Status**: Unit and integration tests have **not yet been implemented** for this version of the project.
