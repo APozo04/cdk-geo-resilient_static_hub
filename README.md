@@ -98,7 +98,7 @@ Once the environment is initialized and your `.env` is configured, you can deplo
     ```
 * **Production:**
     ```bash
-    cdk deploy --all --env=prod
+    cdk deploy --all -c env=prod
     ```
 
 > [!IMPORTANT]
